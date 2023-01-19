@@ -21,7 +21,7 @@ class AccountController extends AbstractController
         ]);
     }
 
-    #[Route('/', name: 'app_account_login', methods: ['GET'])]
+    #[Route('/login', name: 'app_account_login', methods: ['GET'])]
     public function login(AccountRepository $accountRepository): Response
     {
         return $this->render('account/index.html.twig', [
