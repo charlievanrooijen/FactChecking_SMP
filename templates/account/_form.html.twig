@@ -1,4 +1,23 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+<div class="my-3">
+    <label for="post_title">{{ form_label(form.name) }}</label>
+    {{ form_widget(form.name, {'attr':{'class':'form-control'}}) }}
+</div>
+<div class="my-3">
+    <label for="post_title">{{ form_label(form.lastname) }}</label>
+    {{ form_widget(form.lastname, {'attr':{'class':'form-control'}}) }}
+</div>
+<div class="my-3">
+    <label for="post_title">{{ form_label(form.email) }}</label>
+    {{ form_widget(form.email, {'attr':{'class':'form-control'}}) }}
+</div>
+<div class="my-3">
+    <label for="post_title">{{ form_label(form.password) }}</label>
+    {{ form_widget(form.password, {'attr':{'class':'form-control'}}) }}
+</div>
+
+
+<button class="btn">{{ button_label|default('Save') }}</button>
+
 {{ form_end(form) }}

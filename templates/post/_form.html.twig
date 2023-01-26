@@ -1,4 +1,17 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+
+<div class="my-3">
+    <label for="post_title">{{ form_label(form.Title) }}</label>
+    {{ form_widget(form.Title, {'attr':{'class':'form-control'}}) }}
+</div>
+<div class="my-3">
+    <label for="post_title">{{ form_label(form.text) }}</label>
+    {{ form_widget(form.text, {'attr':{'class':'form-control'}}) }}
+</div>
+<div class="my-3">
+    <label for="post_title">{{ form_label(form.author) }}</label>
+    {{ form_widget(form.author, {'attr':{'class':'form-control'}}) }}
+</div>
     <button class="btn">{{ button_label|default('Save') }}</button>
+
 {{ form_end(form) }}
