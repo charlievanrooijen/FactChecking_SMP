@@ -53,14 +53,18 @@ class AccountRepository extends ServiceEntityRepository
 //            ->getResult()
 //        ;
 //    }
-
-//    public function findOneBySomeField($value): ?Account
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+//
+    public function findOneByCredentials($email, $password): ?array
+    {
+        return $this->createQueryBuilder('a')
+            ->setParameter('email', $email)
+            ->setParameter('password', $password)
+            ->Where('a.email = :email')
+            ->andWhere('a.password = :password')
+            ->orderBy('a.id', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

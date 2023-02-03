@@ -40,10 +40,10 @@
                                 </div>
                             </li>
                             <li class="nav-item">
-                                {% if true %}
-                                    <span class="text-right"><a class="nav-link" href="{{ path('app_login') }}"> Login </a></span>
+                                {% if account | default(false) %}
+                                    <span class="text-right"><a class="nav-link" href="{{ path('app_logout') }}"> Logout </a></span>
                                 {% else %}
-                                    <span class="text-right"><a class="nav-link" href="{{ path('app_logout') }}"> register </a></span>
+                                    <span class="text-right"><a class="nav-link" href="{{ path('login_page') }}"> Login </a></span>
                                 {% endif %}
                             </li>
                         </ul>

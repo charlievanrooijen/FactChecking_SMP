@@ -20,7 +20,7 @@ class Account implements UserInterface
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Password = null;
+    private ?string $password = null;
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Post::class)]
     private Collection $posts;
@@ -62,12 +62,12 @@ class Account implements UserInterface
 
     public function getPassword(): ?string
     {
-        return $this->Password;
+        return $this->password;
     }
 
-    public function setPassword(string $Password): self
+    public function setPassword(string $password): self
     {
-        $this->Password = $Password;
+        $this->password = $password;
 
         return $this;
     }
@@ -104,7 +104,7 @@ class Account implements UserInterface
 
     public function __toString()
     {
-        return $this->name . ' ' . $this->id;
+        return $this->name;
     }
 
     public function getLastName(): ?string

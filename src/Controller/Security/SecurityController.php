@@ -4,22 +4,41 @@ namespace App\Controller\Security;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use App\Service\SecurityAuthService;
 
 class SecurityController extends AbstractController
 {
-    #[Route(path: '/login', name: 'app_login', methods: ['GET', 'POST'])]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    private SecurityAuthService $securityAuthService;
+    private AuthenticationUtils $authenticationUtils;
+    private RequestStack $requestStack;
+
+    public function __construct(SecurityAuthService $securityAuthService, AuthenticationUtils $AuthenticationUtils, RequestStack $requestStack)
     {
-         if ($this->getUser()) {
-             return $this->redirectToRoute('target_path');
-         }
+        $this->securityAuthService = $securityAuthService;
+        $this->authenticationUtils = $AuthenticationUtils;
+        $this->requestStack = $requestStack;
+    }
 
-        $error = $authenticationUtils->getLastAuthenticationError();
-        $lastUsername = $authenticationUtils->getLastUsername();
+    public function findAccountForLogin(Request $request): array|AuthenticationException
+    {
+        $session = $this->requestStack->getSession();
+        $email = $request->request->get('_email');
+        $password = $request->request->get('_password');
+        $authenticated = $this->securityAuthService->CheckCredentials($email, $password);
+        $lastUsername = $this->authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        if ($authenticated) {
+            $session->start();
+            $session->set('account', $authenticated);
+            return [$authenticated, $lastUsername];
+        } else {
+            return $this->authenticationUtils->getLastAuthenticationError();
+        }
     }
 
     #[Route(path: '/logout', name: 'app_logout')]

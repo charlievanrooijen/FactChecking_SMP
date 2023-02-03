@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Account;
 use App\Entity\Post;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,7 +15,7 @@ class PostType extends AbstractType
         $builder
             ->add('Title')
             ->add('text')
-            ->add('author')
+            ->add('author', Account::class)
         ;
     }
 
