@@ -6,6 +6,10 @@
 <style>
     .example-wrapper { margin: 3em auto; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+
+    a {
+        text-decoration-line: none;
+    }
 </style>
 
 <div class="example-wrapper">
@@ -15,15 +19,17 @@
                 {% if account | default(false) %}
                     <li class="list-group-item"><a href="{{ path('app_account_profile', { 'slug' : account.slug } ) }}">My Profile</a></li>
                 {% else %}
-                    <span class="text-right"><a class="nav-link" href="{{ path('login_page') }}"> Login </a></span>
+                    <li class="list-group-item"><a href="{{ path('login_page') }}">Login</a></li>
                 {% endif %}
+                <li class="list-group-item"><a href="">Something </a></li>
             </ul>
         </div>
         <div class="col-8">
             {% for post in posts %}
                 <div class="border rounded mb-2">
-                    <div class="p-3 border-bottom border">
-                        <p class="h5 m-0"><a href="{{ path('app_account_profile', { 'slug' : post.author.slug }) }}">
+                    <div class="p-2 border border-2">
+                        <p class="h5 m-0">
+                            <a href="{{ path('app_account_profile', { 'slug' : post.author.slug }) }}">
                             {{ post.author }}
                             </a>
                         </p>
