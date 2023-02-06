@@ -15,7 +15,7 @@ class PostType extends AbstractType
         $builder
             ->add('Title')
             ->add('text')
-            ->add('author', Account::class)
+            ->add('author')
         ;
     }
 

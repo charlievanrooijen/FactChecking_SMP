@@ -4,9 +4,10 @@ namespace App\Entity;
 
 use App\Repository\PostRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
-class Post
+class Post implements UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -61,5 +62,20 @@ class Post
         $this->text = $text;
 
         return $this;
+    }
+
+    public function getRoles(): array
+    {
+        // TODO: Implement getRoles() method.
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getUserIdentifier(): string
+    {
+        // TODO: Implement getUserIdentifier() method.
     }
 }

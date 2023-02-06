@@ -17,8 +17,8 @@ class postCheckerController extends AbstractController
         $this->client = $client;
     }
 
-    #[Route('/checkPost', name: 'check_post')]
-    public function index() : string
+    #[Route('/checkPost/{id}', name: 'check_post')]
+    public function index($id) : string
     {
         $apiKey = "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";
         $test = "camels are not real";
@@ -28,6 +28,6 @@ class postCheckerController extends AbstractController
             'https://api.github.com/repos/symfony/symfony-docs'
         );
 
-        return "res";
+        return $res->getContent();
     }
 }

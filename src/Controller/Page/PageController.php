@@ -23,6 +23,16 @@ class PageController extends AbstractController
         $this->postRepository = $postRepository;
     }
 
+    #[Route('/', name: 'landing_page')]
+    public function index(): Response
+    {
+        $session = $this->requestStack->getSession();
+        return $this->render('page/index.html.twig', [
+            'posts' => $this->postRepository->findAll(),
+            'account' => $session->get('account'),
+        ]);
+    }
+
     #[Route('/login', name: 'login_page', methods: ['GET', 'POST'])]
     public function loginpage(Request $request): Response
     {
@@ -36,10 +46,9 @@ class PageController extends AbstractController
     #[Route('/checklogin', name: 'login_check', methods: ['GET', 'POST'])]
     public function checklogin(Request $request): Response
     {
-        $session = $this->requestStack->getSession();
         $account = $this->securityController->findAccountForLogin($request);
 
-        if (is_array($account)) {
+        if (is_array($account) && !($account === [])) {
             return $this->index();
         } else {
             return $this->render('security/login.html.twig', [
@@ -49,15 +58,5 @@ class PageController extends AbstractController
             ]);
         }
 
-    }
-
-    #[Route('/', name: 'landing_page')]
-    public function index(): Response
-    {
-        $session = $this->requestStack->getSession();
-        return $this->render('page/index.html.twig', [
-            'posts' => $this->postRepository->findAll(),
-            'account' => $session->get('account'),
-        ]);
     }
 }

@@ -34,10 +34,10 @@ class SecurityController extends AbstractController
 
         if ($authenticated) {
             $session->start();
-            $session->set('account', $authenticated);
+            $session->set('account', $authenticated[0]);
             return [$authenticated, $lastUsername];
         } else {
-            return $this->authenticationUtils->getLastAuthenticationError();
+            return $this->authenticationUtils->getLastAuthenticationError() ?: [];
         }
     }
 

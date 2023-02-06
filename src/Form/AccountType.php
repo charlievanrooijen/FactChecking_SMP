@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Account;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,8 +16,13 @@ class AccountType extends AbstractType
             ->add('name')
             ->add('lastname')
             ->add('email')
-            ->add('password')
-        ;
+            ->add('password',
+                PasswordType::class,
+                [
+                'required'   => false,
+                'empty_data' => 'John Doe',
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

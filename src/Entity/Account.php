@@ -104,7 +104,7 @@ class Account implements UserInterface
 
     public function __toString()
     {
-        return $this->name;
+        return $this->name . " " . $this->id;
     }
 
     public function getLastName(): ?string

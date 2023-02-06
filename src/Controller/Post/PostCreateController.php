@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PostCreateController extends AbstractController
 {
-    #[Route('/new', name: 'app_post_new', methods: ['GET', 'POST'])]
+    #[Route('post/new', name: 'app_post_new', methods: ['GET', 'POST'])]
     public function new(Request $request, PostRepository $postRepository): Response
     {
         $post = new Post();
