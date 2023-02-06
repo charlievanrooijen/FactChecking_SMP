@@ -30,6 +30,21 @@ class AccountRepository extends ServiceEntityRepository
         }
     }
 
+
+    /**
+     * @return Account Returns an array of Post objects
+     */
+    public function findBySlug($slug): Account
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->orderBy('p.slug', 'ASC')
+            ->getQuery()
+            ->getResult()[0]
+            ;
+    }
+
     public function remove(Account $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);

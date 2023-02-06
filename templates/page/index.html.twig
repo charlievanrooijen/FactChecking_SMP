@@ -12,15 +12,20 @@
     <div class="row my-2">
         <div class="col-4 rounded border p-3">
             <ul class="p-3 list-group">
-                <li class="list-group-item"><a href="{{ path('app_account_profile') }}">My Profile</a></li>
+                {% if account | default(false) %}
+                    <li class="list-group-item"><a href="{{ path('app_account_profile', { 'slug' : account.slug } ) }}">My Profile</a></li>
+                {% else %}
+                    <span class="text-right"><a class="nav-link" href="{{ path('login_page') }}"> Login </a></span>
+                {% endif %}
             </ul>
         </div>
         <div class="col-8">
             {% for post in posts %}
                 <div class="border rounded mb-2">
                     <div class="p-3 border-bottom border">
-                        <p class="h5 m-0">
+                        <p class="h5 m-0"><a href="{{ path('app_account_profile', { 'slug' : post.author.slug }) }}">
                             {{ post.author }}
+                            </a>
                         </p>
                     </div>
                     <div class="py-1 px-3">

@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th>Name</th>
+                <th>slug</th>
                 <th>Lastname</th>
                 <th>Email</th>
                 <th>Password</th>
@@ -19,6 +20,7 @@
         {% for account in accounts %}
             <tr>
                 <td>{{ account.name }}</td>
+                <td>{{ account.slug }}</td>
                 <td>{{ account.lastname }}</td>
                 <td>{{ account.email }}</td>
                 <td>{{ account.Password }}</td>
