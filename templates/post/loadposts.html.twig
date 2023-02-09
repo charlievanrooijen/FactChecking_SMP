@@ -19,7 +19,7 @@
                 </p>
             </div>
             {% if account %}
-                <div class="w-100 p-1">
+                <div class="w-100 p-1 border">
                     <a class="text-decoration-none" href='{{ path('mutate_like_count', { 'post' : post.id }) }}'>
                         {% if account.id not in post.AccountsLiked %}
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star mb-1" viewBox="0 0 16 16">

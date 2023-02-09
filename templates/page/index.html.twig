@@ -14,8 +14,8 @@
 
 <div class="example-wrapper">
     <div class="row my-2">
-        <div class="col-4 rounded border p-3">
-            <ul class="p-3 list-group">
+        <div class="col-12 col-lg-4 rounded border-lg p-md-3 p-sm-2 mb-3">
+            <ul class="p-lg-3 list-group">
                 {% if account | default(false) %}
                     <li class="list-group-item"><a href="{{ path('app_account_profile', { 'slug' : account.slug } ) }}">My Profile</a></li>
                 {% else %}
@@ -24,7 +24,7 @@
                 <li class="list-group-item"><a href="">Something </a></li>
             </ul>
         </div>
-        <div class="col-8">
+        <div class="col-12 col-lg-8">
             {{ block("loadposts", "post/loadposts.html.twig") }}
         </div>
     </div>
