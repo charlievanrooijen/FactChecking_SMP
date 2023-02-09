@@ -25,27 +25,7 @@
             </ul>
         </div>
         <div class="col-8">
-            {% for post in posts %}
-                <div class="border rounded mb-2">
-                    <div class="p-2 border border-2">
-                        <p class="h5 m-0">
-                            <a href="{{ path('app_account_profile', { 'slug' : post.author.slug }) }}">
-                            {{ post.author }}
-                            </a>
-                        </p>
-                    </div>
-                    <div class="py-1 px-3">
-                        <p class="h2">
-                            {{ post.title }}
-                        </p>
-                    </div>
-                    <div class="pb-2 px-3">
-                        <p class="h6">
-                            {{ post.text }}
-                        </p>
-                    </div>
-                </div>
-            {% endfor %}
+            {{ block("loadposts", "post/loadposts.html.twig") }}
         </div>
     </div>
 </div>

@@ -34,6 +34,8 @@ class Account implements UserInterface
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
+    private ?array $roles = [];
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -136,7 +138,7 @@ class Account implements UserInterface
 
     public function getRoles(): array
     {
-        // TODO: Implement getRoles() method.
+        return $this->roles;
     }
 
     public function eraseCredentials()

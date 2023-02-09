@@ -20,7 +20,11 @@ class accountCreateController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $account->setSlug(str_replace("-", " ", $account->getName()));
+            $slug = $account->getName() . "-" . $account->getLastName();
+            $account->setSlug(str_replace(" ", "-", $slug));
+            $time = new \DateTime();
+            $account->setSlug($time->format('H:i:s \O\n Y-m-d'));
+
             $accountRepository->save($account, true);
 
             return $this->redirectToRoute('app_account_index', [], Response::HTTP_SEE_OTHER);
