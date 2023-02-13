@@ -3,7 +3,7 @@
 namespace App\Controller\Account;
 
 use App\Repository\AccountRepository;
-use App\Repository\PostRepository;
+use App\Repository\Post\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;

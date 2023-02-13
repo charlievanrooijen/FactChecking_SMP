@@ -2,7 +2,7 @@
 
 namespace App\Controller\checkers;
 
-use App\Repository\PostRepository;
+use App\Repository\Post\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

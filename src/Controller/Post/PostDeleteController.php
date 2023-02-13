@@ -4,7 +4,7 @@ namespace App\Controller\Post;
 
 use App\Entity\Post\Post;
 use App\Form\PostType;
-use App\Repository\PostRepository;
+use App\Repository\Post\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

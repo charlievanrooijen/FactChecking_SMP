@@ -3,7 +3,7 @@
 namespace App\Entity\Post;
 
 use App\Entity\Account;
-use App\Repository\PostRepository;
+use App\Repository\Post\PostRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

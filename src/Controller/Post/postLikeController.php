@@ -4,33 +4,29 @@ namespace App\Controller\Post;
 
 use App\Controller\Page\PageController;
 use App\Entity\Post\Post;
-use App\Repository\AccountRepository;
-use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\postLikeService;
+use App\Repository\Post\PostLikeRepository;
 
 class postLikeController extends AbstractController
 {
     private postLikeService $likeService;
-    private AccountRepository $accountRepository;
-    private PostRepository $postRepository;
     private RequestStack $requestStack;
     private PageController $pageController;
+    private PostLikeRepository $postLikeRepository;
 
     public function __construct(
         postLikeService $likeService,
-        PostRepository $postRepository,
-        AccountRepository $accountRepository,
         RequestStack $requestStack,
-        PageController $pageController)
+        PageController $pageController,
+        PostLikeRepository $postLikeRepository)
     {
         $this->likeService = $likeService;
-        $this->postRepository = $postRepository;
-        $this->accountRepository = $accountRepository;
         $this->requestStack = $requestStack;
         $this->pageController = $pageController;
+        $this->postLikeRepository = $postLikeRepository;
     }
 
     #[Route('/mutateLikeCount/{post}', name: 'mutate_like_count', methods: ['GET', 'POST'])]
@@ -44,13 +40,11 @@ class postLikeController extends AbstractController
             $postLikes = $post->getPostLikes();
 
             if($postLikes === null) {
-                $entityArray = $this->likeService->addLike($post, $account);
+                $postLikeObj = $this->likeService->addLike($post, $account);
+                $this->postLikeRepository->save($postLikeObj, true);
             } else {
-                $entityArray = $this->likeService->removeLike($post, $account, $postLikes);
+                $this->likeService->removeLike($post, $account, $postLikes);
             }
-
-            $this->postRepository->save($entityArray[0], true);
-            $this->accountRepository->save($entityArray[1], true);
 
             return $this->redirect($request->headers->get('referer'));
         } else {
