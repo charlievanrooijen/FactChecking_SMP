@@ -3,34 +3,59 @@
 namespace App\Controller\Post;
 
 use App\Controller\Page\PageController;
-use App\Entity\Post;
+use App\Entity\Post\Post;
 use App\Repository\AccountRepository;
 use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\postLikeService;
 
 class postLikeController extends AbstractController
 {
-    #[Route('/mutateLikeCount/{post}', name: 'mutate_like_count', methods: ['GET','POST'])]
-    public function __invoke(Post $post, RequestStack $requestStack, PostRepository $postRepository, PageController $pageController)
+    private postLikeService $likeService;
+    private AccountRepository $accountRepository;
+    private PostRepository $postRepository;
+    private RequestStack $requestStack;
+    private PageController $pageController;
+
+    public function __construct(
+        postLikeService $likeService,
+        PostRepository $postRepository,
+        AccountRepository $accountRepository,
+        RequestStack $requestStack,
+        PageController $pageController)
     {
-        $session = $requestStack->getSession();
+        $this->likeService = $likeService;
+        $this->postRepository = $postRepository;
+        $this->accountRepository = $accountRepository;
+        $this->requestStack = $requestStack;
+        $this->pageController = $pageController;
+    }
+
+    #[Route('/mutateLikeCount/{post}', name: 'mutate_like_count', methods: ['GET', 'POST'])]
+    public function __invoke(Post $post)
+    {
+        $session = $this->requestStack->getSession();
         $account = $session->get('account');
-        $request = $requestStack->getCurrentRequest();
-        if($account !== null){
-             if(in_array($account->getId(), $post->getAccountsLiked())){
-                 $post->removeAccountIdFromLikedList($account->getId());
-                 $post->removeLike();
-             }else{
-                $post->addAccountIdToLikedList($account->getId());
-                $post->addLike();
-             }
-             $postRepository->save($post, true);
-             return $this->redirect($request->headers->get('referer'));
-        }else{
-            $pageController->loginpage($request);
+        $request = $this->requestStack->getCurrentRequest();
+
+        if ($account !== null) {
+            $postLikes = $post->getPostLikes();
+
+            if($postLikes === null) {
+                $entityArray = $this->likeService->addLike($post, $account);
+            } else {
+                $entityArray = $this->likeService->removeLike($post, $account, $postLikes);
+            }
+
+            $this->postRepository->save($entityArray[0], true);
+            $this->accountRepository->save($entityArray[1], true);
+
+            return $this->redirect($request->headers->get('referer'));
+        } else {
+            $this->pageController->loginpage($request);
+
             return $this->redirectToRoute('login_page');
         }
     }

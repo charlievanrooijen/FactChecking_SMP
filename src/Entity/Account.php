@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Post\Post;
+use App\Entity\Post\PostLikes;
 use App\Repository\AccountRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -36,9 +38,13 @@ class Account implements UserInterface
 
     private ?array $roles = [];
 
+    #[ORM\OneToMany(mappedBy: 'PostLikedBy', targetEntity: PostLikes::class)]
+    private Collection $postLikes;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->postLikes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -159,6 +165,33 @@ class Account implements UserInterface
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PostLikes>
+     */
+    public function getPostLikes(): Collection
+    {
+        return $this->postLikes;
+    }
+
+    public function addPostLike(PostLikes $postLike): self
+    {
+        $this->postLikes->add($postLike);
+
+        return $this;
+    }
+
+    public function removePostLike(PostLikes $postLike): self
+    {
+        if ($this->postLikes->removeElement($postLike)) {
+            // set the owning side to null (unless already changed)
+            if ($postLike->getPostLikedBy() === $this) {
+                $postLike->setPostLikedBy(null);
+            }
+        }
 
         return $this;
     }

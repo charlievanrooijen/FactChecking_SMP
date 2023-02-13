@@ -2,7 +2,7 @@
 
 namespace App\Controller\Post;
 
-use App\Entity\Post;
+use App\Entity\Post\Post;
 use App\Form\PostType;
 use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

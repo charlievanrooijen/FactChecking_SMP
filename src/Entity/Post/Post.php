@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Post;
 
+use App\Entity\Account;
 use App\Repository\PostRepository;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -18,21 +20,18 @@ class Post implements UserInterface
     #[ORM\ManyToOne(inversedBy: 'posts')]
     private ?Account $author = null;
 
+    #[ORM\OneToOne(mappedBy: 'Post', cascade: ['persist', 'remove'])]
+    private ?PostLikes $postLikes = null;
+
     #[ORM\Column(length: 255)]
     private ?string $Title = null;
 
     #[ORM\Column(length: 255)]
     private ?string $text = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $likes = 0;
-
     #[ORM\Column]
-    private ?\DateTimeImmutable $CreatedAt = null;
+    private ?string $CreatedAt = null;
 
-    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
-    /** @var array|null array<int>  */
-    private ?array $AccountsLiked = [];
 
     public function getId(): ?int
     {
@@ -90,74 +89,37 @@ class Post implements UserInterface
         // TODO: Implement getUserIdentifier() method.
     }
 
-    public function getLikes(): ?int
-    {
-        return $this->likes;
-    }
-
-    public function setLikes(?int $likes): self
-    {
-        $this->likes = $likes;
-
-        return $this;
-    }
-
-    public function addLike(): self
-    {
-        $this->likes++;
-
-        return $this;
-    }
-
-    public function removeLike(): self
-    {
-        $this->likes--;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): int
     {
         return $this->CreatedAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $CreatedAt): self
+    public function setCreatedAt(string $CreatedAt): self
     {
         $this->CreatedAt = $CreatedAt;
 
         return $this;
     }
 
-    public function getAccountsLiked()
+    public function getPostLikes(): ?PostLikes
     {
-        return $this->AccountsLiked;
+        return $this->postLikes;
     }
 
-    public function setAccountsLiked($Account): self
+    public function setPostLikes(?PostLikes $postLikes): self
     {
-        $this->AccountsLiked = $Account;
-
-        return $this;
-    }
-
-    public function addAccountIdToLikedList($AccountId): self
-    {
-        if($this->AccountsLiked === null || $this->AccountsLiked === []){
-            $this->AccountsLiked = [$AccountId];
-        }else{
-            if(!in_array($AccountId, $this->AccountsLiked)){
-                $this->AccountsLiked[] = $AccountId;
-            }
+        // unset the owning side of the relation if necessary
+        if ($postLikes === null && $this->postLikes !== null) {
+            $this->postLikes->setPost(null);
         }
 
-        return $this;
-    }
-
-    public function removeAccountIdFromLikedList($AccountId): self
-    {
-        if (($key = array_search($AccountId, $this->AccountsLiked)) !== false) {
-            unset($this->AccountsLiked[$key]);
+        // set the owning side of the relation if necessary
+        if ($postLikes !== null && $postLikes->getPost() !== $this) {
+            $postLikes->setPost($this);
         }
+
+        $this->postLikes = $postLikes;
+
         return $this;
     }
 }

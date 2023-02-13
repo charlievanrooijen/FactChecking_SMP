@@ -2,9 +2,10 @@
 
 namespace App\Controller\Post;
 
-use App\Entity\Post;
+use App\Entity\Post\Post;
 use App\Form\PostType;
 use App\Repository\PostRepository;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +19,7 @@ class PostCreateController extends AbstractController
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
+        $post->setCreatedAt(date("Y-m-d"));
 
         if ($form->isSubmitted() && $form->isValid()) {
             $postRepository->save($post, true);

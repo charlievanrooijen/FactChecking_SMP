@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Account;
-use App\Entity\Post;
+use App\Entity\Post\Post;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
