@@ -13,25 +13,25 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class postLikeController extends AbstractController
 {
-    #[Route('/mutateLikeCount/{post}', name: 'mutate_like_count', methods: ['GET','POST'])]
+    #[Route('/likeAction/{post}', name: 'mutate_like_count', methods: ['GET','POST'])]
     public function __invoke(Post $post, RequestStack $requestStack, PostRepository $postRepository, PageController $pageController)
     {
         $session = $requestStack->getSession();
         $account = $session->get('account');
-        $request = $requestStack->getCurrentRequest();
-        if($account !== null){
-             if(in_array($account->getId(), $post->getAccountsLiked())){
-                 $post->removeAccountIdFromLikedList($account->getId());
-                 $post->removeLike();
-             }else{
-                $post->addAccountIdToLikedList($account->getId());
-                $post->addLike();
-             }
-             $postRepository->save($post, true);
-             return $this->redirect($request->headers->get('referer'));
-        }else{
-            $pageController->loginpage($request);
-            return $this->redirectToRoute('login_page');
-        }
+//        $request = $requestStack->getCurrentRequest();
+//        if($account !== null){
+//             if(in_array($account->getId(), $post->getAccountsLiked())){
+//                 $post->removeAccountIdFromLikedList($account->getId());
+//                 $post->removeLike();
+//             }else{
+//                $post->addAccountIdToLikedList($account->getId());
+//                $post->addLike();
+//             }
+//             $postRepository->save($post, true);
+//             return $this->redirect($request->headers->get('referer'));
+//        }else{
+//            $pageController->loginpage($request);
+//            return $this->redirectToRoute('login_page');
+//        }
     }
 }
