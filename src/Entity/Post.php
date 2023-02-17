@@ -25,7 +25,7 @@ class Post implements UserInterface
     private ?string $text = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $CreatedAt = null;
+    private ?string $CreatedAt = null;
 
     #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
     /** @var array|null array<int>  */
@@ -87,12 +87,16 @@ class Post implements UserInterface
         // TODO: Implement getUserIdentifier() method.
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getAccountsLiked(){
+        return $this->AccountsLiked;
+    }
+
+    public function getCreatedAt(): string
     {
         return $this->CreatedAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $CreatedAt): self
+    public function setCreatedAt(string $CreatedAt): self
     {
         $this->CreatedAt = $CreatedAt;
 
