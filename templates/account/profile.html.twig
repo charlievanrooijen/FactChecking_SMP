@@ -9,19 +9,19 @@
         <tbody>
         <tr>
             <td>Name</td>
-            <td>{{ account.name }}</td>
+            <td>{{ accountProfile.name }}</td>
         </tr>
         <tr>
             <td>Lastname</td>
-            <td>{{ account.lastname }}</td>
+            <td>{{ accountProfile.lastname }}</td>
         </tr>
         <tr>
             <td>Email</td>
-            <td>{{ account.email }}</td>
+            <td>{{ accountProfile.email }}</td>
         </tr>
         </tbody>
     </table>
-    <a href="{{ path('app_account_edit', { "id" : account.id }) }}" class="btn btn-secondary my-3">Edit info</a>
+    <a href="{{ path('app_account_edit', { "id" : accountProfile.id }) }}" class="btn btn-secondary my-3">Edit info</a>
 
     {{ block("loadposts", "post/loadposts.html.twig") }}
 {% endblock %}

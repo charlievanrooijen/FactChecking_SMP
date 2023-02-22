@@ -17,6 +17,7 @@ class accountProfileController extends AbstractController
     {
         $session = $requestStack->getSession();
         return $this->render('account/profile.html.twig', [
+            'accountProfile' => $accountRepository->findOneBy(['slug' => $slug]),
             'account' => $session->get('account'),
             'posts' => $postRepository->findByAccount($accountRepository->findBySlug($slug))
         ]);
