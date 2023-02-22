@@ -39,9 +39,13 @@ class Account implements UserInterface
 
     private ?array $roles = [];
 
+    #[ORM\OneToMany(mappedBy: 'LikedAccount', targetEntity: PostAction::class)]
+    private Collection $postActions;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->postActions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -175,6 +179,36 @@ class Account implements UserInterface
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PostAction>
+     */
+    public function getPostActions(): Collection
+    {
+        return $this->postActions;
+    }
+
+    public function addPostAction(PostAction $postAction): self
+    {
+        if (!$this->postActions->contains($postAction)) {
+            $this->postActions->add($postAction);
+            $postAction->setLikedAccount($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostAction(PostAction $postAction): self
+    {
+        if ($this->postActions->removeElement($postAction)) {
+            // set the owning side to null (unless already changed)
+            if ($postAction->getLikedAccount() === $this) {
+                $postAction->setLikedAccount(null);
+            }
+        }
 
         return $this;
     }

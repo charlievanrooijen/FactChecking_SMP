@@ -35,6 +35,7 @@ class SecurityController extends AbstractController
         if ($authenticated) {
             $session->start();
             $session->set('account', $authenticated[0]);
+            $session->set('accountid', $authenticated[0]->getId());
             return [$authenticated, $lastUsername];
         } else {
             return $this->authenticationUtils->getLastAuthenticationError() ?: [];

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PostRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -25,6 +27,14 @@ class Post implements UserInterface
 
     #[ORM\Column]
     private string $CreatedAt;
+
+    #[ORM\OneToMany(mappedBy: 'ActionTarget', targetEntity: PostAction::class, cascade: ['persist'])]
+    private Collection $postActions;
+
+    public function __construct()
+    {
+        $this->postActions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -92,5 +102,51 @@ class Post implements UserInterface
         $this->CreatedAt = $CreatedAt;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, PostAction>
+     */
+    public function getPostActions(): Collection
+    {
+        return $this->postActions;
+    }
+
+    public function addPostAction(PostAction $postAction): self
+    {
+        if (!$this->postActions->contains($postAction)) {
+            $this->postActions->add($postAction);
+            $postAction->setActionTarget($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostAction(PostAction $postAction): self
+    {
+        if ($this->postActions->removeElement($postAction)) {
+            // set the owning side to null (unless already changed)
+            if ($postAction->getActionTarget() === $this) {
+                $postAction->setActionTarget(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getLikeCount(){
+        return $this->postActions->count();
+    }
+
+    public function findPostActionByAccount($needle) : bool
+    {
+        foreach($this->postActions->toArray() as $item)
+        {
+            if ($item->getLikedAccount()->getId() === $needle->getId()){
+                return false;
+            }
+        }
+
+        return true;
     }
 }
