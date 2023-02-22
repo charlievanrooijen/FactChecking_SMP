@@ -28,7 +28,7 @@ class Post implements UserInterface
     private ?int $likes = 0;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $CreatedAt = null;
+    private string $CreatedAt;
 
     #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
     /** @var array|null array<int>  */
@@ -116,12 +116,12 @@ class Post implements UserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?string
     {
         return $this->CreatedAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $CreatedAt): self
+    public function setCreatedAt(string $CreatedAt): self
     {
         $this->CreatedAt = $CreatedAt;
 

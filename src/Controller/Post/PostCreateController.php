@@ -20,6 +20,7 @@ class PostCreateController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $post->setCreatedAt(date('l jS \of F Y h:i:s A'));
             $postRepository->save($post, true);
 
             return $this->redirectToRoute('app_post_index', [], Response::HTTP_SEE_OTHER);

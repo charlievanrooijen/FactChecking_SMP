@@ -22,8 +22,7 @@ class accountCreateController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $slug = $account->getName() . "-" . $account->getLastName();
             $account->setSlug(str_replace(" ", "-", $slug));
-            $time = new \DateTime();
-            $account->setSlug($time->format('H:i:s \O\n Y-m-d'));
+            $account->setCreatedAt(date('l jS \of F Y h:i:s A'));
 
             $accountRepository->save($account, true);
 

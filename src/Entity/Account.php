@@ -16,13 +16,16 @@ class Account implements UserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column]
+    private string $CreatedAt;
+
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Post::class)]
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Post::class, cascade: ['persist', 'remove'])]
     private Collection $posts;
 
     #[ORM\Column(length: 255)]
@@ -49,6 +52,19 @@ class Account implements UserInterface
     public function setId(int $Id): self
     {
         $this->Id = $Id;
+
+        return $this;
+    }
+
+
+    public function getCreatedAt(): ?string
+    {
+        return $this->CreatedAt;
+    }
+
+    public function setCreatedAt(string $CreatedAt): self
+    {
+        $this->CreatedAt = $CreatedAt;
 
         return $this;
     }
