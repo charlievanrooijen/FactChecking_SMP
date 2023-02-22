@@ -15,8 +15,9 @@ class PostType extends AbstractType
         $builder
             ->add('Title')
             ->add('text')
-            ->add('author')
-        ;
+            ->add('author', null, [
+                'required' => true
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

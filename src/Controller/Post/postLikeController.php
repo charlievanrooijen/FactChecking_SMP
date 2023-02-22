@@ -30,8 +30,7 @@ class postLikeController extends AbstractController
              $postRepository->save($post, true);
              return $this->redirect($request->headers->get('referer'));
         }else{
-            $pageController->loginpage($request);
-            return $this->redirectToRoute('login_page');
+            return $this->redirect($request->headers->get('referer'));
         }
     }
 }
