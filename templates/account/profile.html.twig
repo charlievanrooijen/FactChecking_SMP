@@ -21,12 +21,20 @@
         </tr>
         </tbody>
     </table>
-   <p>
+    <p>
+        <a href="{{ path('app_account_edit', {"id" : accountProfile.id }) }}"
+           class="btn btn-primary my-3">Edit Account</a>
+    </p>
+    <p>
         {% if blockSwitch %}
-            <a href="{{ path('app_account_profile', {"slug" : accountProfile.slug, "blockSwitch" : blockSwitch }) }}" class="btn btn-primary my-3">Liked Posts</a>
+            <a href="{{ path('app_account_profile', {"slug" : accountProfile.slug, "blockSwitch" : blockSwitch }) }}"
+               class="btn btn-primary my-3">Liked Posts</a>
         {% else %}
-            <a href="{{ path('app_account_profile', {"slug" : accountProfile.slug, "blockSwitch" : blockSwitch }) }}" class="btn btn-primary my-3">Created Posts</a>
+            <a href="{{ path('app_account_profile', {"slug" : accountProfile.slug, "blockSwitch" : blockSwitch }) }}"
+               class="btn btn-primary my-3">Created Posts</a>
         {% endif %}
     </p>
+    <div class="pt-3">
     {{ block("loadposts", "blocks/loadposts.html.twig") }}
+    </div>
 {% endblock %}

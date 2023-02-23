@@ -37,6 +37,7 @@ class Account implements UserInterface
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
+    #[ORM\Column]
     private ?array $roles = [];
 
     #[ORM\OneToMany(mappedBy: 'LikedAccount', targetEntity: PostAction::class)]
@@ -161,14 +162,31 @@ class Account implements UserInterface
         return $this->roles;
     }
 
-    public function eraseCredentials()
+    public function setRoles(string $role): self
     {
-        // TODO: Implement eraseCredentials() method.
+        $this->roles[] = $role;
+
+        return $this;
+    }
+
+    public function isAdmin(): bool
+    {
+        if($this->roles === null){
+            return false;
+        }
+        return in_array('admin', $this->roles);
+    }
+
+    public function eraseCredentials() : self
+    {
+        $this->roles = [];
+
+        return $this;
     }
 
     public function getUserIdentifier(): string
     {
-        // TODO: Implement getUserIdentifier() method.
+        return $this->slug;
     }
 
     public function getSlug(): ?string

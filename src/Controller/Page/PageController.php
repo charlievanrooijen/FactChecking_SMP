@@ -57,6 +57,5 @@ class PageController extends AbstractController
                 'method' => $request->getMethod()
             ]);
         }
-
     }
 }

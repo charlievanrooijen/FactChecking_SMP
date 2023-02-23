@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class postLikeController extends AbstractController
 {
     #[Route('/mutateLikeCount/{post}', name: 'mutate_like_count', methods: ['GET','POST'])]
-    public function __invoke(Post $post, RequestStack $requestStack, PostRepository $postRepository, PostActionRepository $postActionRepository, AccountRepository $accountRepository, PageController $pageController)
+    public function __invoke(Post $post, RequestStack $requestStack, PostRepository $postRepository, PostActionRepository $postActionRepository, AccountRepository $accountRepository)
     {
         $session = $requestStack->getSession();
         $accountid = $session->get('accountid');
