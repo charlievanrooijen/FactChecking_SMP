@@ -39,6 +39,18 @@ class PostActionRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByPostsByLiked($accountId): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.LikedAccount = :LikedAccount')
+            ->setParameter('LikedAccount', $accountId)
+            ->orderBy('p.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 //    /**
 //     * @return PostAction[] Returns an array of PostAction objects
 //     */

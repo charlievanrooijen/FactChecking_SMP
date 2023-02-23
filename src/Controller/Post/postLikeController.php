@@ -34,9 +34,7 @@ class postLikeController extends AbstractController
                  $postRepository->save($post, true);
              }
              $postRepository->save($post, true);
-             return $this->redirect($request->headers->get('referer'));
-        }else{
-            return $this->redirect($request->headers->get('referer'));
         }
+        return $this->redirect($request->headers->get('referer'));
     }
 }
