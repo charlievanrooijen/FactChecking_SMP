@@ -1,0 +1,6 @@
+{% block comment_interface %}
+    <form action="{{ path('comment_new', { "postId": post, "accountId": account }) }}" class="form-group p-1">
+        <textarea name="text" class="form-control mb-2" placeholder="type here..." id="Comment" rows="3"></textarea>
+        <button class="btn btn-success" type="submit" value="submit">Submit</button>
+    </form>
+{% endblock %}

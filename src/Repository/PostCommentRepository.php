@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\PostLike;
+use App\Entity\PostComment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<PostLike>
+ * @extends ServiceEntityRepository<PostComment>
  *
- * @method PostLike|null find($id, $lockMode = null, $lockVersion = null)
- * @method PostLike|null findOneBy(array $criteria, array $orderBy = null)
- * @method PostLike[]    findAll()
- * @method PostLike[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method PostComment|null find($id, $lockMode = null, $lockVersion = null)
+ * @method PostComment|null findOneBy(array $criteria, array $orderBy = null)
+ * @method PostComment[]    findAll()
+ * @method PostComment[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PostActionRepository extends ServiceEntityRepository
+class PostCommentRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, PostLike::class);
+        parent::__construct($registry, PostComment::class);
     }
 
-    public function save(PostLike $entity, bool $flush = false): void
+    public function save(PostComment $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class PostActionRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(PostLike $entity, bool $flush = false): void
+    public function remove(PostComment $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -39,20 +39,8 @@ class PostActionRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByPostsByLiked($accountId): array
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.LikedAccount = :LikedAccount')
-            ->setParameter('LikedAccount', $accountId)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
 //    /**
-//     * @return PostLike[] Returns an array of PostLike objects
+//     * @return PostComment[] Returns an array of PostComment objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -66,7 +54,7 @@ class PostActionRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?PostLike
+//    public function findOneBySomeField($value): ?PostComment
 //    {
 //        return $this->createQueryBuilder('p')
 //            ->andWhere('p.exampleField = :val')

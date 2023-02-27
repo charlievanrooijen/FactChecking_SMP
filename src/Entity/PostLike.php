@@ -6,7 +6,7 @@ use App\Repository\PostActionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PostActionRepository::class)]
-class PostAction
+class PostLike
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

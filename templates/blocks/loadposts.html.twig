@@ -1,7 +1,7 @@
 {% block loadposts %}
     {% for post in posts %}
-        <div class="border rounded mb-2">
-            <div class="p-2 border border-2">
+        <div class="border border-dark border-2 rounded mb-2 bg-light">
+            <div class="p-2 border border-dark border-2 border-bottom">
                 <p class="h5 m-0">
                     <a href="{{ path('app_account_profile', { 'slug' : post.author.slug }) }}">
                         {{ post.author }}
@@ -19,25 +19,98 @@
                 </p>
             </div>
             {% if account %}
-                <div class="w-100 p-1 border">
-                    <a class="text-decoration-none" href='{{ path('mutate_like_count', { 'post' : post.id }) }}'>
-                        {% if post.findPostActionByAccount(account) %}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class="bi bi-star mb-1" viewBox="0 0 16 16">
-                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
-                            </svg>
-                        {% else %}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class="bi bi-star-fill mb-1" viewBox="0 0 16 16">
-                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                            </svg>
-                        {% endif %}
-                    </a>
-                    <span>
+                <div class="w-100 p-1 row">
+                    <div class="col-12">
+                        <a class="text-decoration-none" href='{{ path('mutate_like_count', { 'post' : post.id }) }}'>
+                            {% if post.findPostActionByAccount(account) %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue"
+                                     class="bi bi-star mb-1" viewBox="0 0 16 16">
+                                    <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                                </svg>
+                            {% else %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue"
+                                     class="bi bi-star-fill mb-1" viewBox="0 0 16 16">
+                                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                </svg>
+                            {% endif %}
+                        </a>
+                        <span>
                         {{ post.LikeCount | default(0) }}
                     </span>
+                        <span>
+                        <a onclick="getInterface({{ loop.index }},{{ account.id }},{{ post.id }})">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue"
+                             class="bi bi-chat-left-dots-fill" viewBox="0 0 16 16">
+                            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm5 4a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                        </svg>
+                        </a>
+                    </span>
+                    </div>
+                    <div id="interface{{ loop.index }}"></div>
+                    <div id="comments{{ loop.index }}">
+                        {% for comment in post.postComments %}
+                            <div class="comment p-1 border border-dark rounded m-0">
+                                <p class="p-0 m-0 border-bottom border-dark">
+                                    <a href="{{ path('app_account_profile', { 'slug' : post.author.slug }) }}">
+                                        {{ post.author }}
+                                    </a>
+                                </p>
+                                <p class="p-0 m-0">
+                                    {{ comment.text }}
+                                </p>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             {% endif %}
         </div>
     {% endfor %}
+
+    <script onload="init()" type="application/javascript">
+
+        function init() {
+            localStorage.removeItem("lastpostId")
+        }
+
+        function getInterface(id, post, account) {
+            var lastpostid = null;
+            // get lastPostId if it's saved in localstorage
+            if (typeof (localStorage.getItem("lastpostId") === "number")) {
+                lastpostid = parseInt(localStorage.getItem("lastpostId"));
+            }
+
+            // set interface to "" for clicking commentButton 2 times
+            if (typeof (lastpostid) === "number" && lastpostid === parseInt(id)) {
+                document.getElementById("interface" + lastpostid).innerHTML = "";
+                localStorage.setItem("lastpostId", null)
+            } else {
+                // remove last clicked commentInterface
+                if (lastpostid > 0) {
+                    document.getElementById('interface' + lastpostid).innerHTML = "";
+                }
+
+                // send http request for loading comment interface
+                var target = document.getElementById("interface" + id);
+                var url = '{{ path('comment_interface', { "post": ":post", "account": ":account" }) | raw }}';
+
+                url = url.replace(':post', post)
+                url = url.replace(':account', account)
+
+                sendRequest(target, url);
+                localStorage.setItem("lastpostId", id);
+            }
+        }
+
+        function sendRequest(target, url) {
+            if (target.innerHTML === "") {
+                const xhttp = new XMLHttpRequest();
+                xhttp.onload = function () {
+                    target.innerHTML = this.responseText;
+                }
+                xhttp.open("GET", url);
+                xhttp.send();
+            }
+        }
+
+    </script>
 {% endblock %}

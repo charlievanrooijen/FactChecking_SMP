@@ -4,7 +4,7 @@ namespace App\Controller\Post;
 
 use App\Controller\Page\PageController;
 use App\Entity\Post;
-use App\Entity\PostAction;
+use App\Entity\PostLike;
 use App\Repository\AccountRepository;
 use App\Repository\PostActionRepository;
 use App\Repository\PostRepository;
@@ -28,7 +28,7 @@ class postLikeController extends AbstractController
              if($post->getPostActions()->contains($postAction)){
                  $postActionRepository->remove($postAction, true);
              }else{
-                 $postAction = new PostAction();
+                 $postAction = new PostLike();
                  $postAction->setActionTarget($post)->setLikedAccount($account);
                  $post->addPostAction($postAction);
                  $postRepository->save($post, true);

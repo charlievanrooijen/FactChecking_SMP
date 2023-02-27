@@ -48,8 +48,10 @@ class PageController extends AbstractController
     {
         $account = $this->securityController->findAccountForLogin($request);
 
-        if (is_array($account) && !($account === [])) {
-            return $this->index();
+        if (is_array($account)) {
+            return $this->redirect(
+                $this->generateUrl('landing_page')
+            );
         } else {
             return $this->render('security/login.html.twig', [
                 'error' => $account,

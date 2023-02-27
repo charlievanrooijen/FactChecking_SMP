@@ -6,10 +6,9 @@ use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
-class Post implements UserInterface
+class Post
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -28,12 +27,16 @@ class Post implements UserInterface
     #[ORM\Column]
     private string $CreatedAt;
 
-    #[ORM\OneToMany(mappedBy: 'ActionTarget', targetEntity: PostAction::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'ActionTarget', targetEntity: PostLike::class, cascade: ['persist'])]
     private Collection $postActions;
+
+    #[ORM\OneToMany(mappedBy: 'ActionTarget', targetEntity: PostComment::class, cascade: ['persist'])]
+    private Collection $postComments;
 
     public function __construct()
     {
         $this->postActions = new ArrayCollection();
+        $this->postComments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,21 +80,6 @@ class Post implements UserInterface
         return $this;
     }
 
-    public function getRoles(): array
-    {
-        // TODO: Implement getRoles() method.
-    }
-
-    public function eraseCredentials()
-    {
-        // TODO: Implement eraseCredentials() method.
-    }
-
-    public function getUserIdentifier(): string
-    {
-        // TODO: Implement getUserIdentifier() method.
-    }
-
     public function getCreatedAt(): ?string
     {
         return $this->CreatedAt;
@@ -105,14 +93,14 @@ class Post implements UserInterface
     }
 
     /**
-     * @return Collection<int, PostAction>
+     * @return Collection<int, PostLike>
      */
     public function getPostActions(): Collection
     {
         return $this->postActions;
     }
 
-    public function addPostAction(PostAction $postAction): self
+    public function addPostAction(PostLike $postAction): self
     {
         if (!$this->postActions->contains($postAction)) {
             $this->postActions->add($postAction);
@@ -122,7 +110,7 @@ class Post implements UserInterface
         return $this;
     }
 
-    public function removePostAction(PostAction $postAction): self
+    public function removePostAction(PostLike $postAction): self
     {
         if ($this->postActions->removeElement($postAction)) {
             // set the owning side to null (unless already changed)
@@ -148,5 +136,35 @@ class Post implements UserInterface
         }
 
         return true;
+    }
+
+    /**
+     * @return Collection<int, PostComment>
+     */
+    public function getPostComments(): Collection
+    {
+        return $this->postComments;
+    }
+
+    public function addPostComment(PostComment $postComment): self
+    {
+        if (!$this->postComments->contains($postComment)) {
+            $this->postComments->add($postComment);
+            $postComment->setActionTarget($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostComment(PostComment $postComment): self
+    {
+        if ($this->postComments->removeElement($postComment)) {
+            // set the owning side to null (unless already changed)
+            if ($postComment->getActionTarget() === $this) {
+                $postComment->setActionTarget(null);
+            }
+        }
+
+        return $this;
     }
 }

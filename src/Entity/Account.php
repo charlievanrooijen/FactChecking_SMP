@@ -40,13 +40,17 @@ class Account implements UserInterface
     #[ORM\Column]
     private ?array $roles = [];
 
-    #[ORM\OneToMany(mappedBy: 'LikedAccount', targetEntity: PostAction::class)]
+    #[ORM\OneToMany(mappedBy: 'LikedAccount', targetEntity: PostLike::class)]
     private Collection $postActions;
+
+    #[ORM\OneToMany(mappedBy: 'Commenter', targetEntity: PostComment::class)]
+    private Collection $postComments;
 
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->postActions = new ArrayCollection();
+        $this->postComments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -202,14 +206,14 @@ class Account implements UserInterface
     }
 
     /**
-     * @return Collection<int, PostAction>
+     * @return Collection<int, PostLike>
      */
     public function getPostActions(): Collection
     {
         return $this->postActions;
     }
 
-    public function addPostAction(PostAction $postAction): self
+    public function addPostAction(PostLike $postAction): self
     {
         if (!$this->postActions->contains($postAction)) {
             $this->postActions->add($postAction);
@@ -219,12 +223,42 @@ class Account implements UserInterface
         return $this;
     }
 
-    public function removePostAction(PostAction $postAction): self
+    public function removePostAction(PostLike $postAction): self
     {
         if ($this->postActions->removeElement($postAction)) {
             // set the owning side to null (unless already changed)
             if ($postAction->getLikedAccount() === $this) {
                 $postAction->setLikedAccount(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PostComment>
+     */
+    public function getPostComments(): Collection
+    {
+        return $this->postComments;
+    }
+
+    public function addPostComment(PostComment $postComment): self
+    {
+        if (!$this->postComments->contains($postComment)) {
+            $this->postComments->add($postComment);
+            $postComment->setCommenter($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostComment(PostComment $postComment): self
+    {
+        if ($this->postComments->removeElement($postComment)) {
+            // set the owning side to null (unless already changed)
+            if ($postComment->getCommenter() === $this) {
+                $postComment->setCommenter(null);
             }
         }
 
