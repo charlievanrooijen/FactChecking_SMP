@@ -3,7 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Account;
+use Doctrine\DBAL\Types\Type;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,14 +20,16 @@ class AccountType extends AbstractType
             ->add('slug', null, [
                 'required'   => false
             ])
+            ->add('role', ChoiceType::class,[
+                'choices' => [
+                'admin' => true,
+                'normie' => false
+                ]
+            ])
             ->add('lastname')
             ->add('email')
             ->add('password',
-                PasswordType::class,
-                [
-                'required'   => false,
-                'empty_data' => 'John Doe',
-                ]
+                PasswordType::class
             );
     }
 

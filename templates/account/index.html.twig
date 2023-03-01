@@ -24,6 +24,7 @@
                 <td>{{ account.lastname }}</td>
                 <td>{{ account.email }}</td>
                 <td>{{ account.Password }}</td>
+                <td>{{ account.roles|join(', ') }}</td>
                 <td>
                     <a href="{{ path('app_account_show', {'id': account.id}) }}">show</a>
                     <a href="{{ path('app_account_edit', {'id': account.id}) }}">edit</a>

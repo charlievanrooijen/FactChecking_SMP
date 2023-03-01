@@ -134,7 +134,7 @@ class Account implements UserInterface
 
     public function __toString()
     {
-        return $this->id . " " . $this->name;
+        return $this->name . " " . $this->lastName;
     }
 
     public function getLastName(): ?string
@@ -164,6 +164,21 @@ class Account implements UserInterface
     public function getRoles(): array
     {
         return $this->roles;
+    }
+
+    public function isRole(): bool
+    {
+        return in_array('admin', $this->roles);
+    }
+
+    public function setRole(Bool $isAdmin): self
+    {
+        if($isAdmin){
+            $this->roles = ["admin"];
+        }else{
+            $this->roles = ["normie"];
+        }
+        return $this;
     }
 
     public function setRoles(string $role): self

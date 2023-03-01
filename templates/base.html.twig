@@ -34,7 +34,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ app.request.getSchemeAndHttpHost() }}">Home</a>
                     </li>
-                    {% if account.admin | default(false) %}
+                    {% if account.role | default(true) %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('app_account_index') }}">Account</a>
                         </li>

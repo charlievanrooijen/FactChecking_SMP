@@ -5,12 +5,12 @@
     {{ form_widget(form.name, {'attr':{'class':'form-control'}}) }}
 </div>
 <div class="my-3">
-    <label for="post_title">{{ form_label(form.slug) }}</label>
-    {{ form_widget(form.slug, {'attr':{'class':'form-control'}}) }}
-</div>
-<div class="my-3">
     <label for="post_title">{{ form_label(form.lastname) }}</label>
     {{ form_widget(form.lastname, {'attr':{'class':'form-control'}}) }}
+</div>
+<div class="my-3">
+    <label for="post_title">{{ form_label(form.slug) }}</label>
+    {{ form_widget(form.slug, {'attr':{'class':'form-control'}}) }}
 </div>
 <div class="my-3">
     <label for="post_title">{{ form_label(form.email) }}</label>
@@ -19,6 +19,10 @@
 <div class="my-3">
     <label for="post_title">{{ form_label(form.password) }}</label>
     {{ form_widget(form.password, {'attr':{'class':'form-control'}}) }}
+</div>
+<div class="my-3">
+    <label for="post_role">{{ form_label(form.role) }}</label>
+    {{ form_widget(form.role, {'attr':{'class':'form-control'}}) }}
 </div>
 
 

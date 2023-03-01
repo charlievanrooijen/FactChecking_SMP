@@ -38,7 +38,7 @@
                         {{ post.LikeCount | default(0) }}
                     </span>
                         <span>
-                        <a onclick="getInterface({{ loop.index }},{{ account.id }},{{ post.id }})">
+                        <a onclick="getInterface({{ loop.index }},{{ post.id }})">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="blue"
                              class="bi bi-chat-left-dots-fill" viewBox="0 0 16 16">
                             <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm5 4a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
@@ -51,8 +51,8 @@
                         {% for comment in post.postComments %}
                             <div class="comment p-1 border border-dark rounded m-0">
                                 <p class="p-0 m-0 border-bottom border-dark">
-                                    <a href="{{ path('app_account_profile', { 'slug' : post.author.slug }) }}">
-                                        {{ post.author }}
+                                    <a href="{{ path('app_account_profile', { 'slug' : comment.Commenter.slug }) }}">
+                                        {{ comment.Commenter }}
                                     </a>
                                 </p>
                                 <p class="p-0 m-0">
@@ -72,12 +72,14 @@
             localStorage.removeItem("lastpostId")
         }
 
-        function getInterface(id, post, account) {
+        function getInterface(id, post) {
+
             var lastpostid = null;
             // get lastPostId if it's saved in localstorage
             if (typeof (localStorage.getItem("lastpostId") === "number")) {
                 lastpostid = parseInt(localStorage.getItem("lastpostId"));
             }
+            console.log(lastpostid)
 
             // set interface to "" for clicking commentButton 2 times
             if (typeof (lastpostid) === "number" && lastpostid === parseInt(id)) {
@@ -85,16 +87,16 @@
                 localStorage.setItem("lastpostId", null)
             } else {
                 // remove last clicked commentInterface
-                if (lastpostid > 0) {
-                    document.getElementById('interface' + lastpostid).innerHTML = "";
+                var lastElement = document.getElementById('interface' + lastpostid);
+                if (lastpostid !== null && lastElement) {
+                    lastElement.innerHTML = "";
                 }
 
                 // send http request for loading comment interface
                 var target = document.getElementById("interface" + id);
-                var url = '{{ path('comment_interface', { "post": ":post", "account": ":account" }) | raw }}';
+                var url = '{{ path('comment_interface', { "post": ":post"}) | raw }}';
 
                 url = url.replace(':post', post)
-                url = url.replace(':account', account)
 
                 sendRequest(target, url);
                 localStorage.setItem("lastpostId", id);

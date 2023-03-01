@@ -8,6 +8,7 @@ use App\Entity\PostComment;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Annotation\Route;
 
 class postCommentController extends AbstractController
@@ -17,12 +18,11 @@ class postCommentController extends AbstractController
     {
         return $this->render('blocks/commentinterface.html.twig', [
             'post' => $request->query->get('post'),
-            'account' => $request->query->get('account'),
         ]);
     }
 
-    #[Route('/new/comment/{postId}/{accountId}', name: 'comment_new', methods: ['GET','POST'])]
-    public function setComment($postId, $accountId, Request $request, ManagerRegistry $doctrine)
+    #[Route('/new/comment/{postId}', name: 'comment_new', methods: ['GET','POST'])]
+    public function setComment($postId, RequestStack $requestStack, ManagerRegistry $doctrine)
     {
         $em = $doctrine->getManager();
 
@@ -30,12 +30,12 @@ class postCommentController extends AbstractController
         $PostRepo = $em->getRepository(Post::class);
 
         $postcomment = new PostComment();
-        $postcomment->setCommenter($accountRepo->findOneBy(['id' => $accountId]));
+        $postcomment->setCommenter($accountRepo->findOneBy(['id' => $requestStack->getSession()->get('account')]));
         $postcomment->setActionTarget($PostRepo->findOneBy(['id' => $postId]));
-        $postcomment->setText($request->query->get('text'));
+        $postcomment->setText($requestStack->getCurrentRequest()->query->get('text'));
 
         $em->persist($postcomment);
         $em->flush();
-        return $this->redirect($request->headers->get('referer'));
+        return $this->redirect($requestStack->getCurrentRequest()->headers->get('referer'));
     }
 }
