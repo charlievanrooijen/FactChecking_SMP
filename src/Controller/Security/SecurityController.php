@@ -2,6 +2,8 @@
 
 namespace App\Controller\Security;
 
+use App\Repository\AccountRepository;
+use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -16,19 +18,30 @@ class SecurityController extends AbstractController
     private SecurityAuthService $securityAuthService;
     private AuthenticationUtils $authenticationUtils;
     private RequestStack $requestStack;
-
-    public function __construct(SecurityAuthService $securityAuthService, AuthenticationUtils $AuthenticationUtils, RequestStack $requestStack)
+    private SecurityService $securityService;
+    private AccountRepository $accountRepository;
+    public function __construct(
+        SecurityAuthService $securityAuthService,
+        AuthenticationUtils $AuthenticationUtils,
+        RequestStack $requestStack,
+        SecurityService $securityService,
+        AccountRepository $accountRepository,
+    )
     {
         $this->securityAuthService = $securityAuthService;
         $this->authenticationUtils = $AuthenticationUtils;
         $this->requestStack = $requestStack;
+        $this->securityService = $securityService;
+        $this->accountRepository = $accountRepository;
     }
 
     public function findAccountForLogin(Request $request): array|AuthenticationException
     {
         $session = $this->requestStack->getSession();
         $email = $request->request->get('_email');
+        $account = $this->accountRepository->findOneByEmail($email);
         $password = $request->request->get('_password');
+        $password = $this->securityService->setPasswordHash($account, $password);
         $authenticated = $this->securityAuthService->CheckCredentials($email, $password);
         $lastUsername = $this->authenticationUtils->getLastUsername();
 

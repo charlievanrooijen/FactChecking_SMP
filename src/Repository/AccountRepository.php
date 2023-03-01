@@ -54,21 +54,18 @@ class AccountRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Account[] Returns an array of Account objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-//
+    public function findOneByEmail($email): ?Account
+    {
+        return $this->createQueryBuilder('a')
+            ->setParameter('email', $email)
+            ->Where('a.email = :email')
+            ->orderBy('a.id', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult()
+            ;
+    }
+
     public function findOneByCredentials($email, $password): ?array
     {
         return $this->createQueryBuilder('a')
